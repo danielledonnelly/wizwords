@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WizWords</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="terminal" role="application" aria-label="WizWords game">
+      <header class="terminal-header">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="title">wizwords.exe / wizard duel</span>
+      </header>
+
+      <div class="battle-row">
+        <div class="combatant you">
+          <div class="combatant-label">You</div>
+          <div class="hp-bar-wrap">
+            <div class="hp-bar-fill" id="player-hp-fill"></div>
+          </div>
+          <div class="hp-text"><span id="player-hp">100</span> / 100 HP</div>
+        </div>
+        <div class="combatant foe">
+          <div class="combatant-label" id="foe-label">Rival Wizard</div>
+          <div class="hp-bar-wrap foe-bar">
+            <div class="hp-bar-fill foe-fill" id="foe-hp-fill"></div>
+          </div>
+          <div class="hp-text"><span id="foe-hp">100</span> / 100 HP</div>
+        </div>
+      </div>
+
+      <div class="log-panel">
+        <div class="log-title">&gt; battle_log</div>
+        <ul class="log" id="battle-log" aria-live="polite"></ul>
+      </div>
+
+      <div class="spell-strip">
+        <div class="spell-strip-title">Spell cycle <kbd>[</kbd> <kbd>]</kbd>. Pick before you cast.</div>
+        <div class="spell-list" id="spell-list"></div>
+      </div>
+
+      <div class="turn-banner" id="turn-banner">Your turn. Type the spell.</div>
+
+      <div class="prompt-target" id="prompt-target"></div>
+      <div class="prompt-line">
+        <span class="prompt-glyph">&gt;</span>
+        <span class="typed-overlay" id="typed-overlay"></span>
+        <span class="cursor-blink" id="fake-cursor">█</span>
+      </div>
+      <p class="hint" id="hint">
+        Type spells to cast them. The longer the word and the faster you type it, the more damage you will do. Use [
+        and ] to cycle spells. Beware, as clicking a wrong letter will result in a miss, ending your turn.
+      </p>
+
+      <footer class="terminal-footer">
+        <span class="status" id="game-status"></span>
+      </footer>
+    </div>
+
+    <input
+      type="text"
+      class="hidden-input"
+      id="capture"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+      aria-label="Spell input"
+    />
+
+    <script src="game.js"></script>
+  </body>
+</html>
