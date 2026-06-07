@@ -2,7 +2,7 @@
 
 Greetings, weary adventurer. 
 
-A harrowing challenge awaits you: a trial only for the swift of hand.
+A harrowing challenge awaits you: a [trial](https://danielledonnelly.github.io/wizwords/) only for the swift of hand.
 
 You must battle a series of powerful wizards using only your words. 
 
