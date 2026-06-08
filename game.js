@@ -62,6 +62,7 @@ let buffer = "";
 let timerStart = null;
 let lockedSpell = null;
 let foeDisplayName = FOE_NAMES[0];
+let isComposing = false;
 
 function normSpellIndex(i) {
   const n = SPELLS.length;
@@ -235,7 +236,7 @@ function resolvePlayerMiss(reason) {
 }
 
 function onInput() {
-  if (phase !== "player" || playerHp <= 0 || foeHp <= 0) return;
+  if (phase !== "player" || playerHp <= 0 || foeHp <= 0 || isComposing) return;
 
   const spell = currentSpell();
   const target = spell.label;
@@ -314,7 +315,14 @@ function newDuel() {
   renderPrompt();
   focusCapture();
 }
+els.capture.addEventListener("compositionstart", () => {
+  isComposing = true;
+});
 
+els.capture.addEventListener("compositionend", () => {
+  isComposing = false;
+  onInput();
+});
 els.capture.addEventListener("input", onInput);
 
 els.capture.addEventListener("keydown", (e) => {
