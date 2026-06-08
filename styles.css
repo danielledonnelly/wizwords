@@ -273,6 +273,11 @@ kbd {
   text-decoration: line-through;
 }
 
+.typo {
+  font-weight: 600;
+  color: var(--accent);
+}
+
 .cursor-blink {
   color: var(--accent);
   animation: blink 1s step-end infinite;
@@ -293,11 +298,39 @@ kbd {
 }
 
 .hidden-input {
-  position: fixed;
-  left: -9999px;
-  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 1px;
   height: 1px;
+  opacity: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.spell-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cycle-button {
+  font-family: var(--font);
+  font-size: 12px;
+  padding: 8px 10px;
+  color: var(--text);
+  background: #122018;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cycle-button:hover,
+.cycle-button:focus-visible {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+  outline: none;
 }
 
 .terminal-footer {

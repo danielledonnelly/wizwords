@@ -48,6 +48,8 @@ const els = {
   typedOverlay: document.getElementById("typed-overlay"),
   fakeCursor: document.getElementById("fake-cursor"),
   capture: document.getElementById("capture"),
+  cyclePrev: document.getElementById("cycle-prev"),
+  cycleNext: document.getElementById("cycle-next"),
   terminal: document.querySelector(".terminal"),
   hint: document.getElementById("hint"),
   gameStatus: document.getElementById("game-status"),
@@ -63,6 +65,7 @@ let timerStart = null;
 let lockedSpell = null;
 let foeDisplayName = FOE_NAMES[0];
 let isComposing = false;
+let lastAttempt = "";
 
 function normSpellIndex(i) {
   const n = SPELLS.length;
@@ -144,6 +147,9 @@ function renderPrompt() {
   const sp = lockedSpell || currentSpell();
   if (phase === "player" && playerHp > 0 && foeHp > 0) {
     els.promptTarget.innerHTML = `Cast: <em>${sp.label}</em>`;
+  } else if (phase === "foe" && lastAttempt) {
+    els.promptTarget.innerHTML = "You typed: <span class=\"typo\"></span>";
+    els.promptTarget.querySelector(".typo").textContent = lastAttempt;
   } else {
     els.promptTarget.textContent = "";
   }
@@ -212,6 +218,7 @@ function startFoeTurn() {
 }
 
 function resolvePlayerHit(spell, elapsedMs) {
+  lastAttempt = "";
   const dmg = damageForSpell(spell, elapsedMs);
   foeHp = Math.max(0, foeHp - dmg);
   logLine(
@@ -229,8 +236,11 @@ function resolvePlayerHit(spell, elapsedMs) {
   startFoeTurn();
 }
 
-function resolvePlayerMiss(reason) {
+function resolvePlayerMiss(reason, attempt) {
   logLine(reason, "you");
+  if (attempt) {
+    logLine(`You typed "${attempt}".`, "you");
+  }
   resetTypingState();
   startFoeTurn();
 }
@@ -257,6 +267,7 @@ function onInput() {
     if (raw[i] !== target[i]) {
       els.capture.value = "";
       buffer = "";
+      lastAttempt = raw;
       const hadStarted = timerStart !== null;
       timerStart = null;
       lockedSpell = null;
@@ -266,7 +277,8 @@ function onInput() {
           ? "First letter wrong. Miss."
           : hadStarted
             ? `Wrong letter mid-cast (${spell.label}). Miss.`
-            : "Wrong letter. Miss."
+            : "Wrong letter. Miss.",
+        raw
       );
       return;
     }
@@ -310,6 +322,7 @@ function newDuel() {
   resetTypingState();
   setHpBars();
   els.gameStatus.textContent = "";
+  lastAttempt = "";
   logLine(`A duel begins against ${foeDisplayName}.`, "system");
   updateTurnUI();
   renderPrompt();
@@ -334,6 +347,9 @@ els.capture.addEventListener("keydown", (e) => {
     cycleSpell(1);
   }
 });
+
+els.cyclePrev.addEventListener("click", () => cycleSpell(-1));
+els.cycleNext.addEventListener("click", () => cycleSpell(1));
 
 document.addEventListener("keydown", (e) => {
   if (phase === "over" && e.key === "Enter") {

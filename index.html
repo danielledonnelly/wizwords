@@ -61,7 +61,11 @@
 
       <div class="spell-strip">
         <div class="spell-strip-title">Spell cycle <kbd>[</kbd> <kbd>]</kbd>. Pick before you cast.</div>
-        <div class="spell-list" id="spell-list"></div>
+        <div class="spell-controls">
+          <button class="cycle-button" id="cycle-prev" type="button" aria-label="Previous spell">◀</button>
+          <div class="spell-list" id="spell-list"></div>
+          <button class="cycle-button" id="cycle-next" type="button" aria-label="Next spell">▶</button>
+        </div>
       </div>
 
       <div class="turn-banner" id="turn-banner">Your turn. Type the spell.</div>
@@ -88,7 +92,8 @@
       id="capture"
       autocomplete="off"
       autocorrect="off"
-      autocapitalize="off"
+      autocapitalize="none"
+      inputmode="text"
       spellcheck="false"
       aria-label="Spell input"
     />
